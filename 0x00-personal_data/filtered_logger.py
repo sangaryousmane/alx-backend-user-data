@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 """ This function returns and obfuscated log messages
 """
+import mysql.connector
 import re
 import logging
 from typing import List
 import os
-import 
-from mysql.connector.connection import MySQLConnection
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
-def get_db() -> MySQLConnection:
+def get_db() -> mysql.connector.connection.MySQLConnection:
     """ Handles the connection to the database
     """
     username = os.environ.get("PERSONAL_DATA_DB_USERNAME", "root")
@@ -19,8 +18,11 @@ def get_db() -> MySQLConnection:
     host = os.environ.get("PERSONAL_DATA_DB_HOST", "localhost")
     db_name = os.environ.get("PERSONAL_DATA_DB_NAME")
 
-    return MySQLConnection(username=username, password=password,
-                           host=host, database=database_name)
+    connection = mysql.connector.connection.MySQLConnection(
+                                  username=username,
+                                  password=password,
+                                  host=host, database=database_name)
+
 
 def get_logger() -> logging.Logger:
     """ Get a logger from a csv
