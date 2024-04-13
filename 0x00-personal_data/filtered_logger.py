@@ -6,8 +6,12 @@ import logging
 
 
 def filter_datum(fields, redaction, message, separator):
-    pattern = "(" + "|".join(fields) + ")=[^" + separator + "]*"
-    return re.sub(pattern, lambda x: x.group(1) + "=" + redaction, message)
+    """ Return an obfuscated message
+    """
+    return ''.join([re.sub(f'{field}.*?{separator}',
+                  f'{field}={redaction}{separator}', message)
+                   for field in fields])
+
 
 
 class RedactingFormatter(logging.Formatter):
@@ -26,5 +30,5 @@ class RedactingFormatter(logging.Formatter):
         """ Implement the filter datum as the formatter
         """
         record.msg = filter_datum(self.fields, self.REDACTION,
-                                  record.msg, self.SEPARATOR)
-        return super().format(record)
+                                  record.getMessage(), self.SEPARATOR)
+        return super(RedactingFormatter, self).format(record)
