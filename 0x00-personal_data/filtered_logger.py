@@ -9,9 +9,9 @@ def filter_datum(fields, redaction, message, separator):
     """ Return an obfuscated message
     """
     for field in fields:
-        patterns = re.sub(f'{field}=.*?{separator}',
+        message = re.sub(f'{field}=.*?{separator}',
                           f'{field}={redaction}{separator}', message)
-    return patterns
+    return message
 
 
 class RedactingFormatter(logging.Formatter):
