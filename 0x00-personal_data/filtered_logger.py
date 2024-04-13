@@ -26,8 +26,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
 
 def main():
     """
-    Obtain a database connection using get_db and retrieves all rows
-    in the users table and display each row under a filtered format
+    Main function, get the databse and log it!
     """
     db = get_db()
     cursor = db.cursor()
@@ -85,3 +84,7 @@ class RedactingFormatter(logging.Formatter):
         record.msg = filter_datum(self.fields, self.REDACTION,
                                   record.getMessage(), self.SEPARATOR)
         return super(RedactingFormatter, self).format(record)
+
+
+if __name__ == '__main__':
+    main()
